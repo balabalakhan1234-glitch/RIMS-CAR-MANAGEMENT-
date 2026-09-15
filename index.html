@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RIMS CAR Management</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f4f5f7;color:#171717}
+header{background:#111;color:#fff;padding:16px 22px;display:flex;justify-content:space-between;align-items:center}
+.logo{font-weight:800;letter-spacing:1px}.gold{color:#d4a84f}
+nav button,.btn{border:0;border-radius:9px;padding:10px 14px;cursor:pointer}
+nav button{background:#222;color:#fff;margin-left:6px}.btn{background:#111;color:#fff}.btn.goldbtn{background:#d4a84f;color:#111}
+main{max-width:1150px;margin:22px auto;padding:0 16px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+.card{background:#fff;border-radius:15px;padding:18px;box-shadow:0 3px 14px #00000012}.stat{font-size:28px;font-weight:800;margin-top:8px}
+input,select,textarea{width:100%;padding:12px;border:1px solid #ddd;border-radius:9px;margin:6px 0 12px;font-size:15px}
+label{font-size:13px;font-weight:700}.row{display:flex;gap:10px;flex-wrap:wrap}.row>*{flex:1;min-width:180px}
+table{width:100%;border-collapse:collapse}.tablewrap{overflow:auto}th,td{text-align:left;padding:11px;border-bottom:1px solid #eee;white-space:nowrap}
+.badge{padding:5px 9px;border-radius:20px;background:#eee;font-size:12px}.private{background:#fee2e2}.visible{background:#dcfce7}
+.hidden{display:none}.login{max-width:420px;margin:80px auto}.login h1{margin-top:0}
+.login{max-width:460px;margin:45px auto;padding:0;overflow:hidden;background:#fff;border:1px solid #d4a84f;box-shadow:0 12px 40px #0002}
+.login-hero{position:relative;min-height:230px;background:#050505 url("https://images.unsplash.com/photo-1777175013243-434128865428?auto=format&fit=crop&fm=jpg&ixlib=rb-4.1.0&q=80&w=1200") center/cover no-repeat;display:flex;align-items:flex-start;padding:24px}
+.login-hero:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#050505e8 0%,#0505059c 45%,#05050525 100%)}
+.login-brand{position:relative;z-index:1;color:#fff;font-weight:900;letter-spacing:2px;font-size:25px;text-transform:uppercase}.login-brand .gold{color:#d4a84f}.login-sub{position:relative;z-index:1;color:#fff;margin-top:6px;font-size:12px;letter-spacing:1.5px}.login-form{padding:22px}.login-form h3{margin:0 0 16px;color:#111}.login-form input{border:1px solid #d7d7d7}.login-btn{width:100%;font-weight:800;font-size:16px;padding:13px!important}.login-carline{height:3px;background:linear-gradient(90deg,#111,#d4a84f,#fff,#d4a84f,#111)}
+
+.small{font-size:12px;color:#666}.danger{color:#b91c1c}.ok{color:#15803d}
+
+/* V7 HOME — classic V1-style professional dashboard */
+#home{max-width:900px;margin:0 auto;padding-top:4px}
+#home h2{font-size:24px;margin:4px 0 14px;color:#17202a}
+.v1-home-head{background:#07111c;color:#fff;border-radius:16px;padding:18px;margin-bottom:14px;border-bottom:3px solid #f7b928}
+.v1-home-head .gold{color:#f7b928;font-size:12px;letter-spacing:1.2px}
+.v1-search{background:#fff;border-radius:16px;padding:15px;margin:12px 0;box-shadow:0 3px 15px #0b17220d}
+.v1-search b{display:block;margin-bottom:2px;color:#17202a}
+.v1-search input{background:#fff!important;color:#17202a!important;border:1px solid #dfe4ea!important}
+.v1-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.v1-tile{background:#fff;border:0;text-align:left;width:100%;border-radius:15px;padding:16px;box-shadow:0 3px 15px #0b17220d;color:#17202a;cursor:pointer}
+.v1-tile b{display:block;font-size:22px;margin-top:7px}
+.real-car-row{position:relative;display:flex;align-items:center;justify-content:center;min-height:170px;margin-bottom:14px;border-radius:18px;overflow:hidden;background:linear-gradient(120deg,#050505,#141414 55%,#050505);border:1px solid #8d6720;box-shadow:0 8px 30px #0005}
+.real-car-photo{width:48%;height:155px;object-fit:cover;border-radius:14px;filter:saturate(.9) contrast(1.08);box-shadow:0 0 35px #d4a84f55}
+.real-car-copy{width:36%;padding:15px;color:#fff;display:flex;flex-direction:column;gap:7px}.real-car-copy b{color:#f7b928;letter-spacing:1.5px;font-size:12px}.real-car-copy span{font-size:12px;line-height:1.45;color:#ddd}.real-car-glow{position:absolute;width:220px;height:120px;border-radius:50%;background:#d4a84f33;filter:blur(35px);left:24%;top:20px}
+.white-car-photo-icon{width:58px;height:34px;object-fit:cover;border-radius:8px;vertical-align:middle;margin-right:7px;box-shadow:0 2px 8px #0003}
+@media(max-width:600px){.real-car-row{min-height:135px}.real-car-photo{width:52%;height:120px}.real-car-copy{width:42%;padding:10px}.real-car-copy span{font-size:10px}.white-car-photo-icon{width:52px;height:30px}}
+
+.v1-add{width:100%;margin-top:12px;background:#f7b928!important;color:#111!important}
+.v1-recent{background:#fff;border-radius:16px;padding:15px;margin-top:12px;box-shadow:0 3px 15px #0b17220d}
+.v1-recent-title{font-weight:800;margin-bottom:10px}
+@media(max-width:600px){#home{padding-left:0;padding-right:0}.v1-home-head{border-radius:14px}.v1-stats{gap:8px}}
+
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:1150px;background:#111;color:#fff;border-top:1px solid #333;display:flex;justify-content:space-around;align-items:center;padding:7px 4px;z-index:20;box-shadow:0 -5px 20px #0003}.bottom-nav button{background:none!important;color:#bbb!important;border:0;padding:7px 9px!important;font-size:18px;display:flex;flex-direction:column;align-items:center;gap:2px}.bottom-nav button span{font-size:10px;font-weight:700}.bottom-nav button:hover{color:#d4a84f!important;transform:none}.bottom-nav .addnav{background:#d4a84f!important;color:#111!important;border-radius:50%!important;width:48px;height:48px;margin-top:-18px;border:4px solid #f4f5f7;box-shadow:0 4px 15px #0004!important}.bottom-nav .addnav span{color:#111}
+main{padding-bottom:95px!important}
+@media(max-width:600px){.bottom-nav{max-width:100%;padding-bottom:calc(7px + env(safe-area-inset-bottom))}.bottom-nav button{font-size:17px;padding:6px 5px!important}.bottom-nav button span{font-size:9px}}
+
+/* RIMS CAR GOLD BANNER */
+.rims-banner{position:relative;overflow:hidden;background:linear-gradient(135deg,#050505,#111 48%,#070707);border:1px solid #8f6a24;border-radius:18px;margin-bottom:14px;padding:22px 18px 18px;box-shadow:0 8px 28px #0003,inset 0 0 35px #d4a84f12}
+.rims-banner:before,.rims-banner:after{content:"";position:absolute;width:180px;height:180px;border-radius:50%;background:#d4a84f14;filter:blur(35px);top:-90px}
+.rims-banner:before{left:-60px}.rims-banner:after{right:-60px}
+.rims-banner-inner{position:relative;z-index:1;text-align:center}
+.rims-banner .brand{font-size:30px;font-weight:900;letter-spacing:4px;color:#f7d27b;text-shadow:0 2px 14px #d4a84f55}
+.rims-banner .brand span{color:#fff}
+.rims-banner .manage{font-size:14px;letter-spacing:5px;color:#fff;margin-top:4px;font-weight:700}
+.rims-banner .line{height:1px;background:linear-gradient(90deg,transparent,#d4a84f,transparent);margin:13px auto 10px;max-width:500px}
+.rims-banner .tag{font-size:11px;letter-spacing:2px;color:#d7d7d7}
+.rims-cars{display:flex;justify-content:space-between;align-items:end;gap:12px;margin-top:12px}
+.rims-car{width:31%;height:52px;position:relative;opacity:.96}
+.rims-car svg{width:100%;height:100%;filter:drop-shadow(0 5px 8px #000)}
+.rims-car.center{width:38%;height:68px}
+@media(max-width:600px){.rims-banner{padding:18px 10px 14px}.rims-banner .brand{font-size:23px;letter-spacing:3px}.rims-banner .manage{font-size:11px;letter-spacing:3px}.rims-banner .tag{font-size:9px;letter-spacing:1.3px}.rims-car{height:42px}.rims-car.center{height:56px}}
+.white-car-icon{width:21px;height:21px;vertical-align:-4px;margin-right:7px}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js">
+/* ===== V26 FEATURES ===== */
+function money(n){return '₹'+Number(n||0).toLocaleString('en-IN')}
+function calcCost(c){return Number(c.purchasePrice||0)+Number(c.expense||0)}
+function calcProfit(c){return Number(c.salePrice||0)-calcCost(c)}
+function daysLeft(d){if(!d)return null;return Math.ceil((new Date(d+'T23:59:59')-new Date())/86400000)}
+function logActivity(action,reg,extra){if(current?.role!=='Admin'&&action==='DELETE'){} activityLog.unshift({id:Date.now(),at:new Date().toISOString(),by:current?.u||'-',action,reg:reg||'',extra:extra||''});activityLog=activityLog.slice(0,500);persist()}
+function reportsPage(){if(current.role!=='Admin')return;let list=cars, sold=list.filter(c=>c.status==='Sold'), revenue=sold.reduce((a,c)=>a+Number(c.salePrice||0),0), cost=sold.reduce((a,c)=>a+calcCost(c),0), profit=revenue-cost, stockCost=list.filter(c=>c.status!=='Sold').reduce((a,c)=>a+calcCost(c),0);document.getElementById('content').innerHTML=`<h2>📊 Reports & Profit</h2><div class="grid"><div class="card"><b>Total Vehicles</b><h2>${list.length}</h2></div><div class="card"><b>Sold</b><h2>${sold.length}</h2></div><div class="card"><b>Total Sale</b><h2>${money(revenue)}</h2></div><div class="card"><b>Profit / Loss</b><h2 style="color:${profit>=0?'#167441':'#c52f2f'}">${money(profit)}</h2></div></div><div class="card"><h3>Stock Cost</h3><p>${money(stockCost)}</p><p class="small">Profit = Sale Price − Purchase Price − Repair/Other Expense</p></div><div class="card"><h3>Sold Vehicles</h3>${sold.length?sold.map(c=>`<div style="padding:9px 0;border-bottom:1px solid #eee"><b>${c.reg}</b> · ${c.make||''} ${c.model||''}<br>Sale: ${money(c.salePrice)} · Cost: ${money(calcCost(c))} · <b>Profit: ${money(calcProfit(c))}</b></div>`).join(''):'<p class="small">No sold vehicles yet.</p>'}</div>`}
+function activityPage(){if(current.role!=='Admin')return;document.getElementById('content').innerHTML=`<h2>📝 Activity History</h2><div class="card"><input id="actSearch" placeholder="Search vehicle / staff / action" oninput="renderActivity()"><div id="actList"></div></div>`;renderActivity()}
+function renderActivity(){if(current.role!=='Admin')return;let q=(document.getElementById('actSearch')?.value||'').toLowerCase();let a=activityLog.filter(x=>(x.reg+' '+x.by+' '+x.action+' '+x.extra).toLowerCase().includes(q));document.getElementById('actList').innerHTML=a.length?a.map(x=>`<div style="padding:10px 0;border-bottom:1px solid #eee"><b>${x.action}</b> · ${x.reg||'-'}<br><span class="small">${x.by} · ${new Date(x.at).toLocaleString('en-IN')} ${x.extra?'· '+x.extra:''}</span></div>`).join(''):'<p class="small">No activity yet.</p>'}
+
+function searchCars(){let q=(document.getElementById('search').value||'').toUpperCase();let list=cars.filter(allowed).filter(x=>(x.reg||'').includes(q)||(x.model||'').toUpperCase().includes(q)||(x.make||'').toUpperCase().includes(q)||(String(x.owner||'')).toUpperCase().includes(q)||((x.docs||[]).some(d=>(d.vehicleNumber||'').toUpperCase().includes(q)||(d.ocrText||'').toUpperCase().includes(q))));document.getElementById('results').innerHTML=list.length?table(list):"<p class='small'>No authorized record found.</p>"}
+function searchCars2(){let q=(document.getElementById('search2').value||'').toUpperCase();let list=cars.filter(allowed).filter(x=>(x.reg||'').includes(q)||(x.model||'').toUpperCase().includes(q)||(x.make||'').toUpperCase().includes(q)||(String(x.owner||'')).toUpperCase().includes(q));document.getElementById('vtable').innerHTML=list.length?table(list):"<p class='small'>No record found.</p>"}
+
+</script>
+</head>
+<body>
+<div id="app"></div>
+<script>
+let users=[
+ {u:"admin",p:"admin",role:"Admin"},
+ {u:"staff",p:"staff",role:"Staff"}
+];
+let current=null;
+let cars=[];
+let adminPrivate=[];
+let maxStaff=50;
+let incomingRecords=[];
+let soldRecords=[];
+let activityLog=[];
+try{const a=JSON.parse(localStorage.getItem("rims_activity_v26"));if(Array.isArray(a))activityLog=a}catch(e){}
+// V8 uses a fresh storage key so old demo vehicles do not appear.
+try{cars=JSON.parse(localStorage.getItem("rims_cars_v11"))||[]}catch(e){cars=[]}
+try{const savedUsers=JSON.parse(localStorage.getItem("rims_users"));if(Array.isArray(savedUsers)&&savedUsers.length)users=savedUsers}catch(e){}
+try{const savedPrivate=JSON.parse(localStorage.getItem("rims_admin_private"));if(Array.isArray(savedPrivate))adminPrivate=savedPrivate}catch(e){}
+try{const savedMax=Number(localStorage.getItem("rims_max_staff"));if(savedMax>=1&&savedMax<=50)maxStaff=savedMax}catch(e){}
+try{const a=JSON.parse(localStorage.getItem("rims_incoming_v18"));if(Array.isArray(a))incomingRecords=a}catch(e){}
+try{const a=JSON.parse(localStorage.getItem("rims_sold_v18"));if(Array.isArray(a))soldRecords=a}catch(e){}
+users=users.map(u=>u.role==="Staff"&&u.joinedAt?u:{...u,joinedAt:u.role==="Staff"?new Date().toISOString():u.joinedAt,active:u.role!=="Staff"||u.active!==false});
+try{const savedUser=JSON.parse(localStorage.getItem("rims_current_user"));if(savedUser&&savedUser.u){const found=users.find(u=>u.u===savedUser.u&&u.active!==false);if(found)current=found;}}catch(e){}
+function persist(){localStorage.setItem("rims_cars_v11",JSON.stringify(cars));localStorage.setItem("rims_users",JSON.stringify(users));localStorage.setItem("rims_admin_private",JSON.stringify(adminPrivate));localStorage.setItem("rims_max_staff",String(maxStaff));localStorage.setItem("rims_incoming_v18",JSON.stringify(incomingRecords));localStorage.setItem("rims_sold_v18",JSON.stringify(soldRecords));localStorage.setItem("rims_activity_v26",JSON.stringify(activityLog)); if(current)localStorage.setItem("rims_current_user",JSON.stringify({u:current.u}));}
+
+function renderLogin(){
+document.getElementById("app").innerHTML=`<div class="login card">
+<div class="login-hero"><div><div class="login-brand">RIMS <span class="gold">CAR</span></div><div class="login-sub">MANAGEMENT SYSTEM</div></div></div><div class="login-carline"></div>
+<div class="login-form"><h3>🔐 Secure Login</h3>
+<label>User ID</label><input id="uid" placeholder="Enter your ID" autocomplete="username">
+<label>Password</label><input id="pwd" type="password" placeholder="Enter your password" autocomplete="current-password">
+<button class="btn goldbtn login-btn" onclick="login()">LOGIN →</button>
+<p class="small">Pehli baar ID + Password se login karo. Login ke baad app dobara kholne par seedha open hoga.</p><p class="small">Logout ya account delete hone par hi login screen wapas aayegi.</p><p class="small">Demo: admin/admin or staff/staff</p>
+<p id="err" class="danger"></p></div></div>`;
+}
+function login(){
+let u=document.getElementById("uid").value.trim(),p=document.getElementById("pwd").value;
+let x=users.find(a=>a.u===u&&a.p===p);
+if(!x){document.getElementById("err").textContent="Wrong ID or password";return}
+current=x;localStorage.setItem("rims_current_user",JSON.stringify({u:x.u}));render();
+}
+function staffJoined(u){let x=users.find(a=>a.u===u&&a.role==="Staff");return x&&x.joinedAt?new Date(x.joinedAt):null}
+function recordVisibleToCurrent(reg, when){if(current.role==="Admin")return true;let car=findCar(reg);if(!car)return false;let joined=staffJoined(current.u);return !joined||!when||new Date(when)>=joined}
+function allowed(c){if(current.role==="Admin")return true;let joined=staffJoined(current.u);return !joined||!c.createdAt||new Date(c.createdAt)>=joined}
+function render(){
+document.getElementById("app").innerHTML=`<header><div class="logo">RIMS <span class="gold">CAR</span> Management</div><div class="small" style="color:#d4a84f">${current.role}</div></header><main id="content"></main><nav class="bottom-nav">
+<button onclick="page('dashboard')">⌂<span>Home</span></button>
+<button onclick="page('vehicles')">🚘<span>Vehicles</span></button>
+<button class="addnav" onclick="addCar()">＋<span>Add</span></button>
+<button onclick="page('reminders')">🛡️<span>Insurance</span></button>
+<button onclick="moreMenu()">☰<span>More</span></button>
+</nav>`;
+page("dashboard");
+}
+function moreMenu(){
+let items=`<div class="card" style="width:min(420px,100%);border-radius:20px 20px 8px 8px"><div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0">More</h2><button class="btn" onclick="closeMore()">✕</button></div><button class="btn" style="width:100%;margin:8px 0" onclick="closeMore();incomingPage()">🚘 Gadi Aane Ka Record</button><button class="btn" style="width:100%;margin:8px 0" onclick="closeMore();soldPage()">💰 Gadi Jane / Sold Record</button><button class="btn" style="width:100%;margin:8px 0" onclick="closeMore();documentsPage()">📄 Documents</button>${current.role==="Admin"?`<button class="btn" style="width:100%;margin:8px 0" onclick="closeMore();privatePage()">🔐 Admin Privacy</button><button class="btn" style="width:100%;margin:8px 0" onclick="closeMore();page('staff')">👥 Staff Management</button>`:""}<button class="btn" style="width:100%;margin:8px 0" onclick="closeMore();page('backup')">💾 Backup & Restore</button><button class="btn" style="width:100%;margin:8px 0" onclick="logout()">🚪 Logout</button></div>`;let m=document.createElement("div");m.className="modal";m.style.cssText="position:fixed;inset:0;background:#0008;display:flex;align-items:flex-end;justify-content:center;padding:16px;z-index:99";m.innerHTML=items;document.body.appendChild(m);}
+function closeMore(){document.querySelectorAll(".modal").forEach(m=>m.remove());}
+function logout(){localStorage.removeItem("rims_current_user");current=null;document.querySelector(".modal")?.remove();renderLogin()}
+function privatePage(){
+ if(current?.role!=="Admin")return;
+ document.getElementById("content").innerHTML=`
+ <div class="row"><div><button class="btn" onclick="page('dashboard')">← Home</button></div><div><h2>🔐 Admin Privacy</h2></div></div>
+ <div class="card">
+  <p class="small">Sirf Admin ke liye private vehicle/payment records. Gadi Gayi option yahan nahi hai.</p>
+  <div class="row"><div><label>Gadi Number</label><input id="prReg" placeholder="RJ37CB0214"></div><div><label>Gadi Name / Model</label><input id="prCar" placeholder="Dzire"></div></div>
+  <div class="row"><div><label>Record / Hisab Title</label><input id="prTitle" placeholder="Dealer payment / personal expense"></div><div><label>Amount (₹)</label><input id="prAmount" type="number" placeholder="0"></div></div>
+  <div class="row"><div><label>Payment / Dealer</label><input id="prDealer" placeholder="Kis dealer ko diya"></div><div><label>Payment Date</label><input id="prDate" type="date" value="${new Date().toISOString().slice(0,10)}"></div></div>
+  <div class="row"><div><label>Payment Mode</label><select id="prMode"><option>Cash</option><option>UPI</option><option>Bank Transfer</option><option>Other</option></select></div><div><label>Gadi Kahan Se Aayi / Source</label><input id="prSource" placeholder="Dealer / owner / other"></div></div>
+  <div class="row"><div><label>RC Photo</label><input id="prRC" type="file" accept="image/*" multiple></div><div><label>Insurance / Bima Photo</label><input id="prBima" type="file" accept="image/*" multiple></div></div>
+  <div class="row"><div><label>Gadi Photo</label><input id="prGadi" type="file" accept="image/*" multiple></div><div><label>Personal / Other Photo</label><input id="prPersonal" type="file" accept="image/*" multiple></div></div>
+  <label>Private Notes</label><textarea id="prNotes" rows="3" placeholder="Private hisab / notes"></textarea>
+  <button class="btn goldbtn" onclick="savePrivateV30()">＋ Save Private Record</button>
+  <p id="prMsg" class="ok"></p>
+ </div>
+ <div class="card"><input id="prSearch" placeholder="Search gadi number / gadi name / dealer / payment / title" oninput="renderPrivateV30()"><div id="privateList"></div></div>`;
+ renderPrivateV30();
+}
+async function filesToData(files){return Promise.all([...files].map(f=>new Promise(resolve=>{let r=new FileReader();r.onload=()=>resolve({name:f.name,file:r.result});r.readAsDataURL(f)})))}
+async function savePrivateV30(){
+ if(current?.role!=="Admin")return;
+ let reg=document.getElementById('prReg').value.trim(), car=document.getElementById('prCar').value.trim(), title=document.getElementById('prTitle').value.trim();
+ if(!reg && !car && !title){alert('Gadi Number, Gadi Name ya Title me se kuch to bharo');return}
+ let all=[];
+ for(const id of ['prRC','prBima','prGadi','prPersonal']){let inp=document.getElementById(id);if(inp?.files?.length){let arr=await filesToData(inp.files);let type=id==='prRC'?'RC':id==='prBima'?'Insurance / Bima':id==='prGadi'?'Gadi Photo':'Personal / Other';all.push(...arr.map(a=>({...a,type})))}}
+ adminPrivate.push({id:Date.now(),reg,carName:car,title,amount:document.getElementById('prAmount').value||'',dealer:document.getElementById('prDealer').value.trim(),paymentDate:document.getElementById('prDate').value||'',paymentMode:document.getElementById('prMode').value,source:document.getElementById('prSource').value.trim(),notes:document.getElementById('prNotes').value.trim(),files:all,date:new Date().toISOString()});
+ persist();document.getElementById('prMsg').textContent='Private record saved successfully.';setTimeout(privatePage,400);
+}
+function renderPrivateV30(){
+ if(current?.role!=="Admin")return;let el=document.getElementById('privateList');if(!el)return;let q=(document.getElementById('prSearch')?.value||'').toLowerCase();
+ let list=adminPrivate.filter(x=>[x.reg,x.carName,x.title,x.dealer,x.amount,x.paymentMode,x.source,x.notes].join(' ').toLowerCase().includes(q));
+ el.innerHTML=list.length?list.slice().reverse().map(x=>`<div class="card" style="margin:10px 0"><div class="row"><div><h3 style="margin:0">🚘 ${x.reg||'-'} · ${x.carName||'-'}</h3><p><b>${x.title||'Private Record'}</b> ${x.amount?`· ₹${Number(x.amount).toLocaleString('en-IN')}`:''}</p><p class="small">Dealer: ${x.dealer||'-'} · Payment: ${x.paymentMode||'-'} · Date: ${x.paymentDate||'-'}<br>Source: ${x.source||'-'}</p><p>${x.notes||''}</p></div></div>${(x.files||[]).length?`<div class="grid">${x.files.map(f=>`<div><div class="small">${f.type||'File'} · ${f.name||''}</div>${f.file?`<img src="${f.file}" style="width:100%;max-height:220px;object-fit:contain;border-radius:10px;border:1px solid #ddd;background:#f5f5f5">`:''}</div>`).join('')}</div>`:(x.file?`<img src="${x.file}" style="max-width:100%;max-height:260px;object-fit:contain;border-radius:10px">`:'')}<button class="btn danger" onclick="deletePrivateV30(${x.id})" style="margin-top:10px">Delete</button></div>`).join(''):`<p class="small">No private records.</p>`;
+}
+function deletePrivateV30(id){if(current?.role!=="Admin")return;if(confirm('Private record delete kare?')){adminPrivate=adminPrivate.filter(x=>x.id!==id);persist();renderPrivateV30()}}
+function documentsPage(){
+ let visible=cars.filter(allowed), docs=[];
+ visible.forEach(x=>(x.docs||[]).forEach(d=>docs.push({car:x,d})));
+ document.getElementById("content").innerHTML=`<button class="btn" onclick="page('dashboard')">← Back</button><h2>Documents</h2><div class="card"><input id="docSearch" placeholder="Search vehicle number / document" oninput="renderDocs()"><div id="docList"></div></div>`;
+ renderDocs()
+}
+function renderDocs(){
+ let q=(document.getElementById("docSearch")?.value||"").toUpperCase(),docs=[];
+ cars.filter(allowed).forEach(x=>(x.docs||[]).forEach(d=>docs.push({car:x,d})));
+ docs=docs.filter(z=>(z.car.reg+" "+(z.car.model||"")+" "+(z.d.name||"")+" "+(z.d.vehicleNumber||"")).toUpperCase().includes(q));
+ document.getElementById("docList").innerHTML=docs.length?docs.slice().reverse().map(z=>`<div class="card" style="margin:10px 0"><b>${z.car.reg}</b> — ${z.car.make||''} ${z.car.model||''}<p>📄 ${z.d.name||"Document"}</p>${z.d.vehicleNumber?`<p class="small">Detected Vehicle No: <b>${z.d.vehicleNumber}</b></p>`:''}${z.d.file?`<img src="${z.d.file}" style="width:100%;max-height:300px;object-fit:contain;border-radius:10px;background:#eee">`:''}<p class="small">${z.d.addedAt?new Date(z.d.addedAt).toLocaleString('en-IN'):''}</p></div>`).join(""):"<p class='small'>No documents found.</p>"
+}
+function incomingPage(){let list=incomingRecords.filter(r=>{let c=cars.find(x=>normReg(x.reg)===normReg(r.reg));return c&&allowed(c)&&recordVisibleToCurrent(r.reg,r.date)});document.getElementById('content').innerHTML=`<h2>🚘 Gadi Aane Ka Record</h2><div class="card"><input id="inSearch" placeholder="Gadi number se search kare" oninput="filterIncoming()"><div id="inList">${list.length?recordTable(list,'incoming'):'<p class="small">Abhi koi incoming record nahi hai.</p>'}</div></div>`}
+function filterIncoming(){let q=normReg(document.getElementById('inSearch').value);let list=incomingRecords.filter(r=>normReg(r.reg).includes(q)).filter(r=>{let c=cars.find(x=>normReg(x.reg)===normReg(r.reg));return c&&allowed(c)&&recordVisibleToCurrent(r.reg,r.date)});document.getElementById('inList').innerHTML=list.length?recordTable(list,'incoming'):'<p class="small">Record nahi mila.</p>'}
+function soldPage(){let list=soldRecords.filter(r=>{let c=cars.find(x=>normReg(x.reg)===normReg(r.reg));return c&&allowed(c)&&recordVisibleToCurrent(r.reg,r.date)});document.getElementById('content').innerHTML=`<h2>💰 Gadi Jane / Sold Record</h2><div class="card"><input id="soldSearch" placeholder="Gadi number se search kare" oninput="filterSold()"><div id="soldList">${list.length?recordTable(list,'sold'):'<p class="small">Abhi koi sold record nahi hai.</p>'}</div></div>`}
+function filterSold(){let q=(document.getElementById('soldSearch').value||'').toUpperCase();let list=soldRecords.filter(r=>normReg(r.reg).includes(normReg(q))||(r.customerName||'').toUpperCase().includes(q)).filter(r=>{let c=cars.find(x=>normReg(x.reg)===normReg(r.reg));return c&&allowed(c)&&recordVisibleToCurrent(r.reg,r.date)});document.getElementById('soldList').innerHTML=list.length?recordTable(list,'sold'):'<p class="small">Record nahi mila.</p>'}
+function markSold(reg){let x=findCar(reg);if(!x||!allowed(x))return;let name=prompt('Customer Name:','')||'';if(!name)return;let mobile=prompt('Customer Mobile:','')||'';let address=prompt('Customer Address:','')||'';let photoInput=document.createElement('input');photoInput.type='file';photoInput.accept='image/*';photoInput.onchange=()=>{let f=photoInput.files[0];let save=(photo)=>{x.status='Sold';x.customerName=name;x.customerMobile=mobile;x.customerAddress=address;x.customerPhoto=photo||x.customerPhoto||'';soldRecords.push({reg:x.reg,model:(x.make+' '+x.model).trim(),customerName:name,customerMobile:mobile,customerAddress:address,customerPhoto:x.customerPhoto,salePrice:car.salePrice,date:new Date().toISOString(),by:current.u});persist();details(x.reg)};if(f){let r=new FileReader();r.onload=()=>save(r.result);r.readAsDataURL(f)}else save('')};photoInput.click()}
+function page(p){
+let c=document.getElementById("content");
+if(p==="dashboard"){let visible=cars.filter(allowed);c.innerHTML=`<div class="rims-banner"><div class="rims-banner-inner"><div class="brand">RIMS <span>CAR</span></div><div class="manage">MANAGEMENT</div><div class="line"></div><div class="tag">SMART VEHICLE RECORD SYSTEM</div><div class="rims-cars real-car-row"><div class="real-car-glow"></div><img class="real-car-photo" src="https://images.unsplash.com/photo-1777175013243-434128865428?auto=format&fit=crop&fm=jpg&ixlib=rb-4.1.0&q=80&w=1200" alt="White premium car"><div class="real-car-copy"><b>PREMIUM VEHICLES</b><span>Smart records • Documents • Insurance</span></div></div></div></div><div class="v1-home-head"><div class="gold">RIMS CAR</div><h2 style="color:#fff;margin:5px 0 0">Dashboard</h2></div><div class="v1-search"><b>Search Vehicle Number</b><input id="search" placeholder="e.g. RJ37CB0214" oninput="searchCars()"><div id="results"></div></div><div class="v1-stats"><button class="v1-tile" onclick="statusPage('Available')"><img class="white-car-photo-icon" src="https://images.unsplash.com/photo-1777175013243-434128865428?auto=format&fit=crop&fm=jpg&ixlib=rb-4.1.0&q=80&w=1200" alt="White car">Available<b>${visible.filter(x=>x.status==="Available").length}</b></button><button class="v1-tile" onclick="statusPage('Sold')"><span style="color:#cfcfcf;font-weight:800">●</span> Sold<b>${visible.filter(x=>x.status==="Sold").length}</b></button><button class="v1-tile" onclick="statusPage('Reserved')">🟡 Reserved<b>${visible.filter(x=>x.status==="Reserved").length}</b></button><button class="v1-tile" onclick="documentsPage()">📄 Documents<b>${visible.reduce((n,x)=>n+(x.docs||[]).length,0)}</b></button></div><button class="btn goldbtn v1-add" onclick="addCar()">＋ Add Vehicle</button><div class="v1-recent"><div class="v1-recent-title">Recent Vehicle Records</div><div id="recent">${visible.length?table(visible.slice(-5).reverse()):'<p class="small">No vehicle records yet. Add your first vehicle.</p>'}</div></div>`;}
+else if(p==="vehicles")vehiclePage();
+else if(p==="staff")staffPage();
+ else if(p==="reminders")reminderPage();
+ else if(p==="backup")backupPage();
+else if(p==="incoming")incomingPage();
+else if(p==="sold")soldPage();
+}
+function statusPage(status){let list=cars.filter(allowed).filter(x=>x.status===status);document.getElementById("content").innerHTML=`<div class="row"><div><button class="btn" onclick="page('dashboard')">← Back</button></div><div><h2>${status} Vehicles</h2></div></div><div class="card"><input id="statusSearch" placeholder="Search vehicle number / car name / owner" oninput="filterStatus('${status}')"><div id="statusTable"></div></div>`;renderStatus(list);}
+function renderStatus(list){document.getElementById("statusTable").innerHTML=list.length?table(list):"<p class='small'>Is category me koi vehicle record nahi hai.</p>";}
+function filterStatus(status){let q=(document.getElementById("statusSearch").value||"").toUpperCase();let list=cars.filter(allowed).filter(x=>x.status===status).filter(x=>(x.reg+" "+(x.model||"")+" "+(x.make||"")+" "+(x.owner||"")).toUpperCase().includes(q));renderStatus(list);}
+function vehiclePage(){
+document.getElementById("content").innerHTML=`<div class="row"><div><h2>Vehicle Records</h2></div><div style="text-align:right"><button class="btn goldbtn" onclick="addCar()">+ Add Vehicle</button></div></div>
+<div class="card"><input id="search2" placeholder="Search vehicle number / car name / owner / customer" oninput="searchCars2()"><div id="vtable"></div></div>`;
+searchCars2();
+}
+function table(list){
+return `<div class="tablewrap"><table><tr><th>Vehicle</th><th>Car</th><th>Year</th><th>KM</th><th>Status</th><th>Added By</th><th>Action</th></tr>${list.map((x,i)=>`<tr><td><b>${x.reg}</b></td><td>${x.make} ${x.model}</td><td>${x.year}</td><td>${x.km}</td><td><span class="badge">${x.status}</span></td><td>${x.by}</td><td><button class="btn" onclick="details('${x.reg}')">View</button></td></tr>`).join("")}</table></div>`;
+}
+function searchCars(){
+let q=(document.getElementById("search").value||"").toUpperCase();
+let list=cars.filter(allowed).filter(x=>x.reg.includes(q)||x.model.toUpperCase().includes(q)||x.make.toUpperCase().includes(q)||(x.source||"").toUpperCase().includes(q)||(x.customerName||"").toUpperCase().includes(q)||(x.customerMobile||"").toUpperCase().includes(q)||x.owner.toUpperCase().includes(q)||x.docs.some(d=>(d.vehicleNumber||"").toUpperCase().includes(q)||(d.ocrText||"").toUpperCase().includes(q)));
+document.getElementById("results").innerHTML=list.length?table(list):"<p class='small'>No authorized record found.</p>";
+}
+function searchCars2(){
+let q=(document.getElementById("search2").value||"").toUpperCase();
+let list=cars.filter(allowed).filter(x=>(x.reg+" "+x.model+" "+x.make+" "+x.owner+" "+(x.source||"")+" "+(x.customerName||"")+" "+(x.customerMobile||"")+" "+x.docs.map(d=>(d.vehicleNumber||"")+" "+(d.ocrText||"")).join(" ")).toUpperCase().includes(q));
+document.getElementById("vtable").innerHTML=table(list);
+}
+function details(reg){
+ let x=cars.find(a=>a.reg===reg); if(!x||!allowed(x))return;
+ let docs=(x.docs||[]).filter(d=>current.role==="Admin"||(d.perm==="Staff Visible")||(d.perm==="Specific Staff"&&d.staff===current.u));
+ document.getElementById("content").innerHTML=`<button class="btn" onclick="vehiclePage()">← Back</button><h2>${x.reg}</h2>
+ <div class="grid"><div class="card"><h3>Vehicle Details</h3><p><b>${x.make} ${x.model}</b></p><p>Year: ${x.year}</p><p>Fuel: ${x.fuel}</p><p>KM: ${x.km}</p><p>Owner: ${x.owner||"-"}</p><p>Insurance Expiry: ${x.insurance||"Not added"}</p><p>Gadi Paper: <b>${x.modelPaper||"Not set"}</b></p><p>Gadi Kahan Se Aayi: ${x.source||"-"}</p><p>Status: ${x.status}</p>${x.vehiclePhoto?`<p><b>Gadi Photo</b></p><img src="${x.vehiclePhoto}" style="max-width:180px;max-height:180px;object-fit:cover;border-radius:12px;border:1px solid #ddd">`:""}${x.rcPhoto?`<p><b>RC Photo</b></p><img src="${x.rcPhoto}" style="max-width:180px;max-height:180px;object-fit:cover;border-radius:12px;border:1px solid #ddd">`:""}${x.insurancePhoto?`<p><b>Insurance / Bima Photo</b></p><img src="${x.insurancePhoto}" style="max-width:180px;max-height:180px;object-fit:cover;border-radius:12px;border:1px solid #ddd">`:""}<p>Status: ${x.status}</p>${x.status==="Sold"?`<hr><h3>Customer Details</h3><p>Name: ${x.customerName||"-"}</p><p>Address: ${x.customerAddress||"-"}</p><p>Mobile: ${x.customerMobile||"-"}</p>${x.customerPhoto?`<img src="${x.customerPhoto}" style="width:110px;height:110px;object-fit:cover;border-radius:12px;border:1px solid #ddd">`:""}`:""}<p class="small">Record added by: ${x.by}</p>${x.status!=="Sold"?`<button class="btn goldbtn" onclick="markSold('${x.reg}')">💰 Mark as Sold</button>`:""}
+ ${current.role==="Admin"?`<button class="btn" onclick="deleteCar('${x.reg}')">Delete Record</button>`:""}</div>
+ <div class="card"><h3>Documents</h3>${docs.length?docs.map((d,i)=>`<div class="card" style="margin:8px 0"><p>📄 <b>${d.name}</b> <span class="badge ${d.perm==='Admin Only'?'private':'visible'}">${d.perm}</span></p>${d.vehicleNumber?`<p class="small">Detected Vehicle No: <b>${d.vehicleNumber}</b></p>`:""}${d.file?`<img src="${d.file}" style="max-width:100%;max-height:260px;border-radius:10px;object-fit:contain;background:#eee">`:""}${current.role==="Admin"?`<br><button class="btn" onclick="toggleDoc('${x.reg}',${x.docs.indexOf(d)})">Change Access</button>`:""}</div>`).join(""):"<p class='small'>No documents available for your account.</p>"}
+ ${current.role==="Admin"?`<hr><h4>Add RC / Insurance / Document</h4><input id="docname" placeholder="RC / Insurance / PUC"><input id="docfile" type="file" accept="image/*" multiple><p class="small">Ek saath multiple document photos select kar sakte ho.</p><select id="docperm"><option>Admin Only</option><option>Staff Visible</option><option>Specific Staff</option></select><input id="docstaff" placeholder="Staff username (for Specific Staff)"><button class="btn goldbtn" onclick="addDoc('${x.reg}')">📷 Add & Analyse Photo</button><p id="ocrmsg" class="small"></p>`:""}</div></div>`;
+}
+async function addDoc(reg){
+ let x=cars.find(a=>a.reg===reg); if(!x)return;
+ x.docs=x.docs||[];
+ let name=document.getElementById("docname").value.trim()||"Document";
+ let files=[...(document.getElementById("docfile")?.files||[])];
+ let perm=document.getElementById("docperm").value;
+ let staff=perm==="Specific Staff"?document.getElementById("docstaff").value.trim():"";
+ if(perm==="Specific Staff"&&!users.some(u=>u.u===staff&&u.role==="Staff")){alert("Valid staff username required");return}
+ if(!files.length){alert("RC/Insurance ki photo select karo");return}
+ let msg=document.getElementById("ocrmsg");
+ msg.textContent=`${files.length} photo save ho rahi hain...`;
+ for(let i=0;i<files.length;i++){
+   let file=files[i];
+   let dataUrl=await new Promise((resolve,reject)=>{let r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(file)});
+   let text="";
+   try{
+     let out=await Tesseract.recognize(file,"eng",{logger:m=>{if(m.status&&m.progress)msg.textContent=`Photo ${i+1}/${files.length} analyse: ${m.status} ${Math.round(m.progress*100)}%`}});
+     text=out.data.text||"";
+   }catch(e){}
+   let normalized=text.toUpperCase().replace(/[^A-Z0-9]/g,"");
+   let regMatch=normalized.match(/[A-Z]{2}[0-9]{1,2}[A-Z]{1,3}[0-9]{3,4}/);
+   let detected=regMatch?regMatch[0]:"";
+   x.docs.push({name:files.length>1?`${name} ${i+1}`:name,perm,staff,file:dataUrl,ocrText:text,vehicleNumber:detected,addedAt:new Date().toISOString(),by:current.u,fileName:file.name});
+ }
+ persist();
+ msg.textContent=`✅ ${files.length} document photo${files.length>1?'s':''} save ho gayi.`;
+ setTimeout(()=>details(reg),700);
+}
+function toggleDoc(reg,i){let x=cars.find(a=>a.reg===reg);let d=x.docs[i];d.perm=d.perm==="Admin Only"?"Staff Visible":d.perm==="Staff Visible"?"Specific Staff":"Admin Only";if(d.perm==="Specific Staff")d.staff=prompt("Staff username:","staff")||"staff";persist();details(reg)}
+function deleteCar(reg){if(current.role!=="Admin")return;if(confirm("Delete this vehicle record?")){cars=cars.filter(x=>x.reg!==reg);persist();vehiclePage()}}
+
+const carOptions=["Dzire","Swift","Baleno","Wagon R","Alto","Ertiga","i20","Grand i10","Creta","Nexon","Punch","Thar","Scorpio","Kwid","Innova","City"];
+const makeOptions=["Maruti Suzuki","Hyundai","Tata Motors","Mahindra","Toyota","Honda","Renault","Kia","Volkswagen","Skoda","Nissan","MG","Ford","Jeep","Nissan","Datsun","Citroen","Fiat","BMW","Mercedes-Benz","Audi","Volvo","Jaguar","Land Rover","Lexus"];
+function normReg(v){return (v||"").toUpperCase().replace(/[^A-Z0-9]/g,"")}
+function findCar(reg){let n=normReg(reg);return cars.find(x=>normReg(x.reg)===n)}
+function addCar(){
+if(current.role!=="Admin"&&current.role!=="Staff")return;
+document.getElementById("content").innerHTML=`<button class="btn" onclick="vehiclePage()">← Back</button><h2>Add Vehicle</h2><div class="card">
+<div class="row"><div><label>Registration Number</label><input id="reg" placeholder="RJ37CB0214"></div><div><label>Car Name</label><input id="model" list="carList" placeholder="Jaise Dzire, Swift, Thar"><datalist id="carList">${carOptions.map(x=>`<option value="${x}">`).join("")}</datalist><p class="small">Yahan sirf car ka naam likho; list optional hai.</p></div></div>
+<div class="row"><div><label>Make / Company</label><input id="make" list="makeList" placeholder="Jaise Maruti Suzuki"><datalist id="makeList">${makeOptions.map(x=>`<option value="${x}">`).join("")}</datalist><p class="small">Company list se select karo ya apni company ka naam likho.</p></div><div><label>Year</label><input id="year"></div></div>
+<div class="row"><div><label>Fuel</label><select id="fuel"><option>Petrol</option><option>CNG</option><option>Diesel</option><option>Electric</option></select></div><div><label>KM Driven</label><input id="km" type="number"></div></div>
+<div class="row"><div><label>Current Owner</label><select id="owner"><option value="">Select Owner</option><option value="1">1 Owner</option><option value="2">2 Owner</option><option value="3">3 Owner</option><option value="4">4 Owner</option><option value="5">5 Owner</option></select></div><div><label>Insurance Expiry</label><input id="ins" type="date"></div></div>
+<div class="row"><div><label>Gadi Paper</label><select id="modelPaper"><option>Aay</option><option>Nahi</option><option>Pending</option></select></div><div><label>Entry Type</label><select id="entryType"><option value="Aayi">🚗 Gadi Aayi</option><option value="Gayi">💰 Gadi Gayi</option></select></div></div>
+<div id="existingVehicleBox" style="display:none;margin-top:12px" class="card"><h3>💰 Gadi Gayi — Existing Gadi Select Karo</h3><label>Gadi Aayi me saved vehicle</label><select id="existingVehicle"><option value="">Select vehicle</option>${cars.filter(allowed).map(c=>`<option value="${c.reg}">${c.reg} — ${(c.make+' '+c.model).trim()}</option>`).join("")}</select><p class="small">Isse Gadi Aayi ka original record delete nahi hoga. Wahi vehicle Gadi Gayi me update hoga.</p></div>
+<div id="sourceBox"><label>Gadi Kahan Se Aayi</label><input id="source" placeholder="Owner / Dealer / Exchange etc."></div>
+<div id="incomingDocsBox" style="margin-top:12px" class="card"><h3>Gadi Aayi Documents / Photos</h3><div class="row"><div><label>Gadi Photo</label><input id="vehiclePhoto" type="file" accept="image/*"></div><div><label>RC Photo</label><input id="rcPhoto" type="file" accept="image/*"></div></div><label>Insurance / Bima Photo</label><input id="insurancePhoto" type="file" accept="image/*"><p class="small">Gadi Aayi ke time Gadi Photo, RC aur Bima ki photo yahin add kar sakte ho.</p></div>
+<div class="row"><div><label>Purchase Price (₹)</label><input id="purchasePrice" type="number" placeholder="0"></div><div><label>Sale Price (₹)</label><input id="salePrice" type="number" placeholder="0"></div></div>
+<div class="row"><div><label>Repair / Other Expense (₹)</label><input id="expense" type="number" placeholder="0"></div><div><label>Expense Notes</label><input id="expenseNotes" placeholder="Service, repair etc. (optional)"></div></div>
+<div class="card" style="margin-top:12px"><h3>📸 Vehicle Gallery</h3><label>Multiple Car Photos</label><input id="galleryPhotos" type="file" accept="image/*" multiple><p class="small">Ek saath multiple photos select kar sakte ho.</p></div>
+<label>Status</label><select id="status"><option>Available</option><option>Reserved</option><option>Sold</option></select>
+<div id="saleBox" style="display:none;margin-top:12px" class="card"><h3>Sale / Customer Details</h3><div class="row"><div><label>Customer Name</label><input id="customerName"></div><div><label>Customer Mobile</label><input id="customerMobile"></div></div><label>Customer Address</label><textarea id="customerAddress" rows="3"></textarea><label>Customer Photo</label><input id="customerPhoto" type="file" accept="image/*"></div>
+<button class="btn goldbtn" onclick="saveCar()">Save Vehicle</button><p id="saveMsg" class="ok"></p></div>`;
+const updateEntryForm=()=>{
+ let type=document.getElementById("entryType").value;
+ document.getElementById("sourceBox").style.display=type==="Aayi"?"block":"none";
+ document.getElementById("incomingDocsBox").style.display=type==="Aayi"?"block":"none";
+ document.getElementById("saleBox").style.display=type==="Gayi"?"block":"none";
+ document.getElementById("existingVehicleBox").style.display=type==="Gayi"?"block":"none";
+ if(type==="Gayi")document.getElementById("status").value="Sold";
+};
+const loadExistingVehicle=()=>{
+ const reg=document.getElementById("existingVehicle")?.value;
+ if(!reg)return;
+ const c=findCar(reg); if(!c)return;
+ document.getElementById("reg").value=c.reg||"";
+ document.getElementById("make").value=c.make||"";
+ document.getElementById("model").value=c.model||"";
+ document.getElementById("year").value=c.year||"";
+ document.getElementById("fuel").value=c.fuel||"Petrol";
+ document.getElementById("km").value=c.km||"";
+ document.getElementById("owner").value=c.owner||"";
+ document.getElementById("ins").value=c.insurance||"";
+ document.getElementById("modelPaper").value=c.modelPaper||"Aay";
+ document.getElementById("source").value=c.source||"";
+ document.getElementById("purchasePrice").value=c.purchasePrice||0;
+ document.getElementById("expense").value=c.expense||0;
+ document.getElementById("expenseNotes").value=c.expenseNotes||"";
+ document.getElementById("salePrice").value=c.salePrice||0;
+ document.getElementById("status").value="Sold";
+};
+document.getElementById("entryType").addEventListener("change",updateEntryForm);
+document.getElementById("existingVehicle").addEventListener("change",loadExistingVehicle);
+document.getElementById("status").addEventListener("change",e=>{if(document.getElementById("entryType").value!=="Gayi")document.getElementById("saleBox").style.display="none"});
+updateEntryForm();
+}
+async function saveCar(){
+let reg=document.getElementById("reg").value.trim().toUpperCase(); if(!reg){alert("Vehicle number required");return}
+let entryType=document.getElementById("entryType").value, status=entryType==="Gayi"?"Sold":document.getElementById("status").value;
+let existing=entryType==="Gayi"?findCar(document.getElementById("existingVehicle")?.value||reg):null;
+if(entryType==="Gayi"&&!existing){alert("Pehle Gadi Aayi me saved vehicle select karo.");return}
+if(entryType==="Aayi"&&cars.some(x=>normReg(x.reg)===normReg(reg))){alert("Vehicle already exists");return}
+const readPhoto=async(id)=>{let f=document.getElementById(id)?.files?.[0];if(!f)return "";return await new Promise(resolve=>{let r=new FileReader();r.onload=()=>resolve(r.result);r.readAsDataURL(f)})};
+let customerPhoto=await readPhoto("customerPhoto");
+let vehiclePhoto=await readPhoto("vehiclePhoto");
+let rcPhoto=await readPhoto("rcPhoto");
+let insurancePhoto=await readPhoto("insurancePhoto");
+let car=existing||{reg,make:"",model:"",year:"",fuel:"Petrol",km:"",owner:"",insurance:"",status:"Available",modelPaper:"Aay",source:"",vehiclePhoto:"",rcPhoto:"",insurancePhoto:"",purchasePrice:0,salePrice:0,expense:0,expenseNotes:"",gallery:[],customerName:"",customerMobile:"",customerAddress:"",customerPhoto:"",by:current.u,createdAt:new Date().toISOString(),docs:[]};
+car.docs=car.docs||[]; car.gallery=car.gallery||[];
+car.reg=existing?existing.reg:reg; car.make=document.getElementById("make").value; car.model=document.getElementById("model").value; car.year=document.getElementById("year").value; car.fuel=document.getElementById("fuel").value; car.km=document.getElementById("km").value; car.owner=document.getElementById("owner").value; car.insurance=document.getElementById("ins").value; car.status=status; car.modelPaper=document.getElementById("modelPaper").value; car.source=document.getElementById("source").value; car.purchasePrice=Number(document.getElementById("purchasePrice")?.value||car.purchasePrice||0); car.salePrice=Number(document.getElementById("salePrice")?.value||car.salePrice||0); car.expense=Number(document.getElementById("expense")?.value||car.expense||0); car.expenseNotes=document.getElementById("expenseNotes")?.value||car.expenseNotes||""; car.by=existing?car.by:current.u;
+if(status==="Sold"){car.customerName=document.getElementById("customerName").value;car.customerMobile=document.getElementById("customerMobile").value;car.customerAddress=document.getElementById("customerAddress").value;if(customerPhoto)car.customerPhoto=customerPhoto;}
+if(entryType==="Aayi"){
+ if(vehiclePhoto){car.vehiclePhoto=vehiclePhoto;car.docs.push({name:"Gadi Photo",perm:"Staff Visible",file:vehiclePhoto,addedAt:new Date().toISOString(),by:current.u});}
+ if(rcPhoto){car.rcPhoto=rcPhoto;car.docs.push({name:"RC",perm:"Staff Visible",file:rcPhoto,addedAt:new Date().toISOString(),by:current.u});}
+ if(insurancePhoto){car.insurancePhoto=insurancePhoto;car.docs.push({name:"Insurance / Bima",perm:"Staff Visible",file:insurancePhoto,addedAt:new Date().toISOString(),by:current.u});}
+}
+const galleryFiles=[...(document.getElementById("galleryPhotos")?.files||[])];
+if(galleryFiles.length){await Promise.all(galleryFiles.map(f=>new Promise(resolve=>{let r=new FileReader();r.onload=()=>{car.gallery.push(r.result);car.docs.push({name:"Vehicle Gallery",perm:"Staff Visible",file:r.result,addedAt:new Date().toISOString(),by:current.u});resolve()};r.readAsDataURL(f)})))}
+if(!existing)cars.push(car);
+if(entryType==="Aayi") incomingRecords.push({reg,model:(car.make+' '+car.model).trim(),source:car.source,date:new Date().toISOString(),by:current.u});
+if(entryType==="Gayi") soldRecords.push({reg:car.reg,model:(car.make+' '+car.model).trim(),customerName:car.customerName,customerMobile:car.customerMobile,customerAddress:car.customerAddress,customerPhoto:car.customerPhoto,salePrice:car.salePrice,date:new Date().toISOString(),by:current.u});
+persist();document.getElementById("saveMsg").textContent="Vehicle saved successfully.";setTimeout(vehiclePage,700);
+}
+function staffPage(){
+ if(current.role!=="Admin")return;
+ let staff=users.filter(u=>u.role==="Staff");
+ document.getElementById("content").innerHTML=`<h2>👥 Staff Management</h2><div class="grid"><div class="card"><h3>Create Staff</h3><p class="small">Maximum ${maxStaff} staff accounts. Current: ${staff.length}</p><input id="nu" placeholder="Username"><input id="np" type="password" placeholder="Password"><button class="btn goldbtn" onclick="createStaff()">Create Staff</button></div><div class="card"><h3>Staff Limit</h3><label>Maximum Staff (1–50)</label><input id="staffLimit" type="number" min="1" max="50" value="${maxStaff}"><button class="btn" onclick="saveStaffLimit()">Save Limit</button><p class="small">Admin kabhi bhi limit badha/ghata sakta hai, maximum 50.</p></div></div><div class="card"><h3>Staff Accounts</h3>${staff.length?staff.map(u=>`<div class="staff-row" style="padding:12px 0;border-bottom:1px solid #eee"><button class="btn" onclick="staffDetails('${encodeURIComponent(u.u)}')" style="width:100%;text-align:left"><b>👤 ${u.u}</b><div class="small">Added: ${u.joinedAt?new Date(u.joinedAt).toLocaleString('en-IN'):'-'}</div><span class="small">Click to view all vehicle records</span></button><div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn" onclick="changeStaffCredentials('${encodeURIComponent(u.u)}')">🔑 Change ID / Password</button><button class="btn danger" onclick="deleteStaff('${encodeURIComponent(u.u)}')">🗑 Delete Account</button></div></div>`).join(""):"<p class='small'>No staff accounts.</p>"}</div><div class="card"><h3>Access Rules</h3><p>Admin → All records + Admin Privacy</p><p>Staff → Sabhi normal vehicle records dekh/search sakta hai; Admin Privacy sirf Admin ke liye.</p><p>New staff → Account banne ki date/time ke baad ke normal records only</p><p>Deleted staff → Login/search access immediately removed</p></div>`;
+}
+function changeStaffCredentials(enc){if(current.role!=="Admin")return;let old=decodeURIComponent(enc),u=users.find(x=>x.u===old&&x.role==="Staff");if(!u)return;let nu=prompt("New Staff ID / Username",u.u);if(nu===null)return;nu=nu.trim();if(!nu)return alert("Username required");if(nu!==u.u&&users.some(x=>x.u===nu))return alert("Username already exists");let np=prompt("New Password (blank = keep current)");if(np===null)return;if(nu!==u.u)u.u=nu;if(np)u.p=np;persist();alert("Staff ID / Password updated successfully");staffPage()}
+function staffDetails(enc){if(current.role!=="Admin")return;let name=decodeURIComponent(enc),u=users.find(x=>x.u===name&&x.role==="Staff");if(!u)return;let list=cars.filter(x=>x.createdBy===name || x.createdBy===u.u || x.by===name || x.staff===name || x.createdByUser===name);let q="";document.getElementById("content").innerHTML=`<div class="row"><div><button class="btn" onclick="staffPage()">← Staff Management</button></div><div><h2>👤 ${name} — Vehicle Details</h2></div></div><div class="card"><div class="small">Staff ID: ${name} • Joined: ${u.joinedAt?new Date(u.joinedAt).toLocaleString('en-IN'):'-'}</div><input id="staffCarSearch" placeholder="Search vehicle number, model, make, owner, status..." oninput="renderStaffDetails('${encodeURIComponent(name)}')"></div><div id="staffVehicleList"></div>`;renderStaffDetails(enc)}
+function renderStaffDetails(enc){let name=decodeURIComponent(enc),q=(document.getElementById('staffCarSearch')?.value||'').toLowerCase();let list=cars.filter(x=>x.createdBy===name || x.createdBy===name || x.by===name || x.staff===name || x.createdByUser===name);if(q)list=list.filter(x=>JSON.stringify(x).toLowerCase().includes(q));let el=document.getElementById('staffVehicleList');if(!el)return;el.innerHTML=`<div class="card"><h3>Added Vehicles (${list.length})</h3>${list.length?list.map(x=>`<div style="padding:14px 0;border-bottom:1px solid #eee"><div class="row"><div><b>${x.reg||'-'}</b><div class="small">${x.make||''} ${x.model||''} • ${x.year||'-'} • ${x.fuel||'-'}</div><div class="small">KM: ${x.km||'-'} • Owner: ${x.owner||'-'} • Status: ${x.status||'-'}</div><div class="small">Insurance: ${x.insurance||'-'} • Source: ${x.source||'-'}</div><div class="small">Purchase: ₹${x.purchasePrice||0} • Sale: ₹${x.salePrice||0}</div></div></div></div>`).join(''):"<p class='small'>Is staff ke naam se koi vehicle record nahi mila.</p>"}</div>`}
+function createStaff(){if(current.role!=="Admin")return;let staffCount=users.filter(x=>x.role==="Staff").length;if(staffCount>=maxStaff){alert(`Staff limit ${maxStaff} hai. Pehle limit badhao.`);return}let u=document.getElementById("nu").value.trim(),p=document.getElementById("np").value;if(!u||!p){alert("Username and password required");return}if(users.some(x=>x.u===u)){alert("Username already exists");return}users.push({u,p,role:"Staff",joinedAt:new Date().toISOString(),active:true});persist();staffPage()}
+function saveStaffLimit(){if(current.role!=="Admin")return;let n=Number(document.getElementById("staffLimit").value);if(!Number.isInteger(n)||n<1||n>50){alert("Limit 1 se 50 ke beech rakho");return}if(n<users.filter(x=>x.role==="Staff").length){alert("Current staff count se kam limit nahi rakh sakte");return}maxStaff=n;persist();staffPage()}
+function deleteStaff(enc){if(current.role!=="Admin")return;let u=decodeURIComponent(enc);if(!confirm(`Staff ${u} ka account delete karna hai? Iske baad wo login/search nahi kar payega.`))return;users=users.filter(x=>!(x.u===u&&x.role==="Staff"));persist();staffPage()}
+
+function reminderPage(){
+ let today=new Date(); today.setHours(0,0,0,0);
+ let list=cars.filter(allowed).map(x=>{let d=x.insurance?new Date(x.insurance+"T00:00:00"):null;let days=d?Math.ceil((d-today)/86400000):99999;return {...x,days}}).filter(x=>x.days<=60).sort((a,b)=>a.days-b.days);
+ document.getElementById("content").innerHTML=`<h2>Insurance Reminders</h2><div class="card">${list.length?list.map(x=>`<p><b>${x.reg}</b> — ${x.make} ${x.model} — ${x.insurance||"Not added"} <span class="badge ${x.days<0?'private':'visible'}">${x.days<0?'Expired':x.days+' days left'}</span></p>`).join(""):"<p class='small'>No insurance expiry within 60 days.</p>"}</div>`;
+}
+function backupPage(){
+ document.getElementById("content").innerHTML=`<h2>Backup & Restore</h2><div class="card"><p class="small">Browser demo data backup. Production app should use secure server backup.</p><button class="btn goldbtn" onclick="exportData()">Export Backup</button> <label class="btn" style="display:inline-block">Import Backup<input type="file" accept="application/json" onchange="importData(event)" style="display:none"></label></div>`;
+}
+function exportData(){let blob=new Blob([JSON.stringify({cars,users,adminPrivate,maxStaff,incomingRecords,soldRecords},null,2)],{type:'application/json'});let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='rims-car-backup.json';a.click();URL.revokeObjectURL(a.href)}
+function importData(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let d=JSON.parse(r.result);if(!Array.isArray(d.cars)||!Array.isArray(d.users))throw Error();cars=d.cars;users=d.users;adminPrivate=Array.isArray(d.adminPrivate)?d.adminPrivate:[];maxStaff=Number(d.maxStaff)||50;incomingRecords=Array.isArray(d.incomingRecords)?d.incomingRecords:[];soldRecords=Array.isArray(d.soldRecords)?d.soldRecords:[];persist();alert('Backup restored successfully');render()}catch(err){alert('Invalid backup file')}};r.readAsText(f)}
+
+function closeMore(){document.querySelectorAll(".modal").forEach(m=>m.remove());}
+function logout(){document.querySelectorAll('.modal').forEach(m=>m.remove());current=null;localStorage.removeItem("rims_current_user");renderLogin()}
+
+// V30 safe activity wrappers (installed after base functions are declared)
+(function(){
+ const baseSave=saveCar, baseMark=markSold, baseDelete=deleteCar;
+ saveCar=async function(){let type=document.getElementById('entryType')?.value;await baseSave();let reg=document.getElementById('reg')?.value||'';logActivity(type==='Gayi'?'SOLD':'ADD',reg,type==='Gayi'?'Vehicle sold':'Vehicle added')};
+ markSold=function(reg){return baseMark(reg)};
+ deleteCar=function(reg){if(current?.role!=='Admin')return;if(confirm('Delete this vehicle record?')){baseDelete(reg);logActivity('DELETE',reg,'Vehicle record deleted')}};
+})();
+
+window.addEventListener("DOMContentLoaded",()=>{if(current)render();else renderLogin()});
+if(current){render()}else{renderLogin();}
+</script>
+</body></html>
